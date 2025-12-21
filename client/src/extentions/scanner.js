@@ -1,12 +1,49 @@
 //function to simulate AI content checking
 async function checkContentWithAI(textToCheck) {
-  console.log("Send to AI to check: ", textToCheck);
-  return textToCheck.includes("idiot"); 
+  console.log("Sending to Backend: ", textToCheck);
+  
+  try {
+    const response = await fetch('http://localhost:3000/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: textToCheck })
+    });
+
+    const data = await response.json();
+    console.log("AI Result:", data);
+
+    return data.is_harmful; 
+  } catch (error) {
+    console.error("Failed to connect to AI server:", error);
+    return false;
+  }
 }
 
 // function to trigger support chat
 function triggerSupportChat() {
-  console.log("!!! Triggering support chat !!!");
+  console.log("!!! Triggering support alert !!!");
+  const notification = document.createElement('div');
+  notification.innerText = "⚠️ זוהה תוכן שעלול להיות פוגעני. האם את צריכה תמיכה?";
+  
+  Object.assign(notification.style, {
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    backgroundColor: '#ff4d4d',
+    color: 'white',
+    padding: '15px 25px',
+    borderRadius: '8px',
+    zIndex: '9999',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+    fontFamily: 'Arial, sans-serif',
+    direction: 'rtl'
+  });
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 5000);
 }
 
 
