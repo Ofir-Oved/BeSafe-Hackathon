@@ -14,9 +14,6 @@ function App() {
           </nav>
         </header>
         <main className={styles.main}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
         </main>
         <footer className={styles.footer}>
           <p>&copy; 2024 My App</p>
