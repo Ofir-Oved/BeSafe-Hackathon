@@ -1,11 +1,10 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router'
+import { Link } from 'react-router'
 import styles from './styles/App.module.css';
 
 import projectLogo from './assets/project-logo.png'
 
 function App() {
   return (
-    <BrowserRouter>
       <div className={styles.app}>
         <header className={styles.appHeader}>
           <img src={projectLogo} alt="Logo" className={styles.appLogo} />
@@ -19,7 +18,6 @@ function App() {
           <p>&copy; 2024 My App</p>
         </footer>
       </div>
-    </BrowserRouter>
   );
 }
 
