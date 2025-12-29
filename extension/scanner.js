@@ -25,32 +25,34 @@ async function scanText(text) {
   }
 }
 
+let iframe = null;
 // function to trigger support chat
 function triggerSupportChat() {
-  console.log("!!! Triggering support alert !!!");
-  const notification = document.createElement('div');
-  notification.innerText = "⚠️ זוהה תוכן שעלול להיות פוגעני. האם את צריכה תמיכה?";
-  
-  Object.assign(notification.style, {
-    position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    backgroundColor: '#ff4d4d',
-    color: 'white',
-    padding: '15px 25px',
-    borderRadius: '8px',
-    zIndex: '9999',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-    fontFamily: 'Arial, sans-serif',
-    direction: 'rtl'
+  if (iframe) return;
+
+  iframe = document.createElement("iframe");
+
+  iframe.src = chrome.runtime.getURL("overlay/dist/index.html");
+
+  Object.assign(iframe.style, {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    width: "320px",
+    height: "480px",
+    border: "none",
+    zIndex: 999999
   });
 
-  document.body.appendChild(notification);
-
-  setTimeout(() => {
-    notification.remove();
-  }, 5000);
+  document.body.appendChild(iframe);
 }
+
+window.addEventListener("message", (e) => {
+  if (e.data === "CLOSE_OVERLAY" && iframe) {
+    iframe.remove();
+    iframe = null;
+  }
+});
 
 let textBuffer = ""; 
 let scanTimeout;

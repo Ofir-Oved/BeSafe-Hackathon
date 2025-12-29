@@ -9,13 +9,14 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["scanner.js","content.js","overlay.js"],
+      "js": ["scanner.js","content.js"],
       "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["overlay.css"],
+      "resources": ["overlay/dist/index.html",
+                    "overlay/dist/assets/*"],
       "matches": ["<all_urls>"]
     }
   ]
