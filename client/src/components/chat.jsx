@@ -1,11 +1,14 @@
+import { useState } from "react";
 import "../styles/chat.css";
 
 export default function Chat({title}) {
+  const [chatTitle, setChatTitle] = useState(title);
+
   return (
     <main className="chat">
       {/* Header */}
       <header className="chat_header">
-        <div className="chat_title">{title}</div>
+        <div className="chat_title">{chatTitle}</div>
       </header>
 
       {/* Messages */}
