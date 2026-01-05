@@ -505,22 +505,22 @@ export default function ChatPage() {
       }
 
       if (vData && vData.allowed === false) {
-        toast.error(vData.reason || "Message blocked due to harmful content.");
-        
+        toast.error(vData.reason || "Message blocked due to harmful content.");
+
         if (typeof vData?.strikes === "number") {
-             previousStrikesRef.current = vData.strikes;
+            previousStrikesRef.current = vData.strikes;
         }
 
-        setInput(""); 
+        setInput("");
 
-        if (vData.isBlocked) {
-          setTimeout(() => {
-            alert("Your account has been blocked due to repeated violations.");
-            window.location.href = "/";
-          }, 2000);
-        }
-        return; 
-      }
+        if (vData.isBlocked) {
+            setTimeout(() => {
+                alert("Your account has been blocked due to repeated violations.");
+                window.location.href = "/";
+            }, 2000);
+        }
+        return;
+      }
 
       if (typeof vData?.strikes === "number" && vData.strikes > 0) {
          if (vData.strikes > previousStrikesRef.current) {
