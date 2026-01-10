@@ -6,9 +6,6 @@ import usersRoutes from "./routes/usersRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import conversationRoutes from "./routes/conversationRoutes.js";
 
-
-
-
 const app = express();
 app.use(cors()); 
 app.use(express.json());
