@@ -6,6 +6,8 @@ import styles from './styles/App.module.css';
 import HomePage from './pages/HomePage'
 import ChatPage from './pages/ChatPage'
 import AdminPage from './pages/AdminPage'
+import LoginPage from './pages/LoginPage'
+import SignUpPage from './pages/SignUpPage'
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
           </Routes>
         </main>
         <ToastContainer position="top-center" />

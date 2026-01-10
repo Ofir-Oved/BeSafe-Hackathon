@@ -1,16 +1,15 @@
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { apiPost } from "../lib/api";
+// import { apiPost } from "../../../login/clients/src/lib/api";
 
 export default function SignUpPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [status, setStatus] = useState({ type: "idle", message: "" });
 
-  const handleSignup = async () => {
+  /*const handleSignup = async () => {
     try {
       setStatus({ type: "loading", message: "Creating account..." });
 
@@ -23,7 +22,7 @@ export default function SignUpPage() {
     } catch (err) {
       setStatus({ type: "error", message: err.message || "Signup failed" });
     }
-  };
+  };*/
 
   return (
     <div className="w-full max-w-md bg-slate-900/70 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
@@ -66,7 +65,7 @@ export default function SignUpPage() {
         </div>
 
         <button
-          onClick={handleSignup}
+          /*onClick={handleSignup}*/
           disabled={status.type === "loading"}
           className="w-full mt-2 rounded-xl bg-cyan-500 hover:bg-cyan-600 disabled:opacity-60 text-slate-900 font-semibold py-3 transition"
         >
@@ -85,9 +84,9 @@ export default function SignUpPage() {
 
         <p className="text-center text-sm text-white/60">
           Already have an account?{" "}
-          <Link to="/" className="text-cyan-300 hover:underline">
+          {/* <Link to="/" className="text-cyan-300 hover:underline">
             Login
-          </Link>
+          </Link> */}
         </p>
       </div>
     </div>
