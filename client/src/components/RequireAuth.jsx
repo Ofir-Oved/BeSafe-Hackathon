@@ -10,3 +10,7 @@ export default function RequireAuth({ children }) {
 
   return children;
 }
+
+RequireAuth.propTypes = {
+  children: PropTypes.node.isRequired,
+};
