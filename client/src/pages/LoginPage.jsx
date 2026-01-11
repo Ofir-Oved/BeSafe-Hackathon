@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPost } from "../lib/api";
-import { useAuthStore } from "./useAuthStore";
+import { saveToken } from "../lib/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { setToken, fetchMe } = useAuthStore();
-
   const [form, setForm] = useState({ email: "", password: "" });
   const [status, setStatus] = useState({ type: "idle", message: "" });
 
@@ -22,12 +20,13 @@ export default function LoginPage() {
     const password = form.password;
 
     if (!email || !password) {
-      setStatus({ type: "error", message: "Please enter email and password." });
+      setStatus({ type: "error", message: "Please enter email and password" });
       return;
     }
 
     try {
       setStatus({ type: "loading", message: "" });
+
 
       const res = await apiPost("/api/auth/login", { email, password });
       if (!res?.token) throw new Error("Server did not return token");
@@ -40,10 +39,24 @@ export default function LoginPage() {
 
       setStatus({ type: "idle", message: "" });
       navigate(complete ? "/home" : "/profile-setup", { replace: true });
+
+      const loginRes = await fetch("/api/login", {
+        email,
+        password,
+      });
+
+      saveToken(res.token);
+
+      if (res.user?.profileCompleted) {
+        navigate("/");
+      } else {
+        navigate("/profile-setup");
+      }
+
     } catch (err) {
       setStatus({
         type: "error",
-        message: err?.message || "Login failed",
+        message: err.message || "Login failed",
       });
     }
   }
