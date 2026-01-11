@@ -16,7 +16,7 @@ export default function AdminPage() {
       const { data } = await fetchUsers();
       setUsers(data);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching user:", error);
       alert("Failed to load users");
     } finally {
       setLoading(false);
