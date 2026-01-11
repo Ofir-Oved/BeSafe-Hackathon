@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPost } from "../lib/api";
@@ -30,18 +29,12 @@ export default function LoginPage() {
     try {
       setStatus({ type: "loading", message: "" });
 
-     
       const res = await apiPost("/api/auth/login", { email, password });
-
-      if (!res?.token) {
-        throw new Error("Server did not return token");
-      }
+      if (!res?.token) throw new Error("Server did not return token");
 
       setToken(res.token);
 
-     
       const user = await fetchMe();
-
       const complete =
         user?.isProfileComplete ?? user?.profileComplete ?? false;
 
@@ -57,12 +50,20 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-md bg-slate-900/70 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+
+      {/* Header */}
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-semibold text-white">Login</h1>
-        <p className="text-sm text-white/60 mt-1">Sign in to continue</p>
+        <h1 className="text-2xl font-semibold bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent">
+          Login
+        </h1>
+        <p className="text-sm text-white/60 mt-1">
+          Sign in to continue
+        </p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">
+
+        {/* Email */}
         <div>
           <label htmlFor="email" className="block text-xs text-white/60">
             Email
@@ -75,10 +76,16 @@ export default function LoginPage() {
             value={form.email}
             onChange={onChange}
             placeholder="name@gmail.com"
-            className="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-cyan-400/50"
+            className="
+              mt-1 w-full rounded-xl bg-white/5 border border-white/10
+              px-4 py-3 text-white placeholder:text-white/40
+              outline-none focus:ring-2
+              focus:ring-sky-400/60 focus:border-sky-400/40
+            "
           />
         </div>
 
+        {/* Password */}
         <div>
           <label htmlFor="password" className="block text-xs text-white/60">
             Password
@@ -91,28 +98,48 @@ export default function LoginPage() {
             value={form.password}
             onChange={onChange}
             placeholder="••••••••"
-            className="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-cyan-400/50"
+            className="
+              mt-1 w-full rounded-xl bg-white/5 border border-white/10
+              px-4 py-3 text-white placeholder:text-white/40
+              outline-none focus:ring-2
+              focus:ring-pink-400/60 focus:border-pink-400/40
+            "
           />
         </div>
 
+        {/* Button */}
         <button
           type="submit"
           disabled={status.type === "loading"}
-          className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-400 disabled:opacity-60 text-slate-900 font-semibold py-3 transition"
+          className="
+            w-full rounded-xl
+            bg-gradient-to-r from-sky-400 to-pink-400
+            hover:from-sky-500 hover:to-pink-500
+            disabled:opacity-60
+            text-slate-900 font-semibold py-3 transition
+          "
         >
           {status.type === "loading" ? "Logging in..." : "Login"}
         </button>
 
+        {/* Error */}
         {status.type === "error" && (
-          <p className="text-sm text-red-300 text-center">{status.message}</p>
+          <p className="text-sm text-red-300 text-center">
+            {status.message}
+          </p>
         )}
 
+        {/* Footer */}
         <p className="text-center text-sm text-white/60">
           Don’t have an account?{" "}
-          <Link to="/signup" className="text-cyan-300 hover:underline">
+          <Link
+            to="/signup"
+            className="bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent hover:underline"
+          >
             Sign up
           </Link>
         </p>
+
       </form>
     </div>
   );

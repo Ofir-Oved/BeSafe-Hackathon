@@ -59,7 +59,7 @@ export default function ChatPage() {
         <div className="p-6 text-white/70">
           כאן יהיה הצ’אט מול <span className="text-white">{name}</span>.
           <br />
-          (בשלב הבא נחבר הודעות אמיתיות ל־DB / Socket.io)
+         
         </div>
       </div>
     </div>

@@ -1,110 +1,94 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+
 import { useAuthStore } from "./useAuthStore";
 import { fetchUsers, fetchUserById } from "../lib/usersApi";
 
-function MeCard() {
+
+const CARD =
+  "rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden";
+const BTN_GRAD =
+  "bg-gradient-to-r from-sky-400 to-pink-400 hover:from-sky-500 hover:to-pink-500 text-slate-900 font-semibold transition";
+const CHIP_GRAD =
+  "bg-gradient-to-r from-sky-400 to-pink-400 bg-clip-text text-transparent";
+
+function safeName(u) {
+  return u?.nickname || u?.name || u?.email || "User";
+}
+
+function Avatar({ src, alt, size = 40 }) {
+  return (
+    <div
+      className="rounded-full overflow-hidden border border-white/10 bg-white/5 shrink-0"
+      style={{ width: size, height: size }}
+    >
+      <img
+        src={src || "/avatar.png"}
+        alt={alt || "avatar"}
+        className="h-full w-full object-cover"
+      />
+    </div>
+  );
+}
+
+
+function MeCard({ onLogout }) {
   const { authUser } = useAuthStore();
-
-  const displayName = useMemo(() => {
-    return authUser?.nickname || authUser?.name || "User";
-  }, [authUser]);
-
+  const name = safeName(authUser);
   const avatar = authUser?.profilePic || "/avatar.png";
 
   return (
     <div className="rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-white/10 p-4 shadow-2xl">
       <div className="flex items-center gap-3">
-        <div className="h-11 w-11 rounded-full overflow-hidden border border-white/15 bg-white/5">
-          <img src={avatar} alt="me" className="h-full w-full object-cover" />
+        <Avatar src={avatar} alt={name} size={44} />
+        <div className="min-w-0 leading-tight">
+          <div className="text-white font-semibold truncate">{name}</div>
+          <div className={`text-xs ${CHIP_GRAD}`}>Online</div>
         </div>
 
-        <div className="leading-tight">
-          <div className="text-white font-semibold">{displayName}</div>
-          <div className="text-xs text-emerald-300">Online</div>
-        </div>
+        <button
+          onClick={onLogout}
+          className={`ml-auto rounded-xl px-3 py-2 text-sm ${BTN_GRAD}`}
+          title="Logout"
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
 }
 
-function UsersList({ users, onSelect }) {
+function FriendsList({ friends, onPickDm }) {
   return (
-    <div className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden">
+    <div className={CARD}>
       <div className="px-4 py-3 border-b border-white/10">
-        <div className="text-white font-semibold">All users</div>
-        <div className="text-xs text-white/60">{users.length} users</div>
-      </div>
-
-      <div className="max-h-[70vh] overflow-auto">
-        {users.map((u) => {
-          const name = u.nickname || u.name || "User";
-          const avatar = u.profilePic || "/avatar.png";
-
-          return (
-            <button
-              key={u._id}
-              onClick={() => onSelect(u._id)}
-              className="w-full text-left px-4 py-3 hover:bg-white/5 transition flex items-center gap-3 border-b border-white/5"
-            >
-              <div className="h-10 w-10 rounded-full overflow-hidden border border-white/10 bg-white/5">
-                <img
-                  src={avatar}
-                  alt={name}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-
-              <div className="min-w-0">
-                <div className="text-white font-medium truncate">{name}</div>
-                <div className="text-xs text-white/50 truncate">
-                  {u.isProfileComplete ? "Profile complete" : "New user"}
-                </div>
-              </div>
-            </button>
-          );
-        })}
-
-        {users.length === 0 && (
-          <div className="p-4 text-white/70">No users found.</div>
-        )}
-      </div>
-    </div>
-  );
-}
-function MyFriendsList({ friends, onSelect }) {
-  return (
-    <div className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/10">
-        <div className="text-white font-semibold">My friends</div>
+        <div className="text-white font-semibold">Friends</div>
         <div className="text-xs text-white/60">{friends.length} friends</div>
       </div>
 
-      <div className="max-h-[45vh] overflow-auto">
+      <div className="max-h-[60vh] overflow-auto">
         {friends.map((f) => {
-          const name = f.nickname || f.name || "Friend";
+          const name = safeName(f);
           const avatar = f.profilePic || "/avatar.png";
-
           return (
             <button
               key={f._id}
-              onClick={() => onSelect(f)}
-              className="w-full text-left px-4 py-3 hover:bg-white/5 transition flex items-center gap-3 border-b border-white/5"
+              onClick={() => onPickDm(f._id)}
+              className="w-full text-left px-4 py-3 hover:bg-white/5 hover:ring-1 hover:ring-sky-400/20 transition flex items-center gap-3 border-b border-white/5"
             >
-              <div className="h-10 w-10 rounded-full overflow-hidden border border-white/10 bg-white/5">
-                <img src={avatar} alt={name} className="h-full w-full object-cover" />
-              </div>
-
+              <Avatar src={avatar} alt={name} size={40} />
               <div className="min-w-0">
                 <div className="text-white font-medium truncate">{name}</div>
-                <div className="text-xs text-white/50 truncate">Friend</div>
+                <div className="text-xs text-white/50 truncate">Tap to chat</div>
               </div>
             </button>
           );
         })}
 
         {friends.length === 0 && (
-          <div className="p-4 text-white/70">No friends yet. Add someone 🙂</div>
+          <div className="p-4 text-white/70">
+            No friends yet. Add someone 🙂
+          </div>
         )}
       </div>
     </div>
@@ -112,10 +96,165 @@ function MyFriendsList({ friends, onSelect }) {
 }
 
 
-function ProfileModal({ open, onClose, user, onAddFriend, onChat, isFriend }) {
+function Tabs({ tab, setTab }) {
+  return (
+    <div className="flex gap-2 p-2">
+      <button
+        onClick={() => setTab("rooms")}
+        className={`flex-1 rounded-xl px-3 py-2 text-sm border transition ${
+          tab === "rooms"
+            ? `border-white/20 ${BTN_GRAD}`
+            : "border-white/10 bg-white/5 text-white hover:bg-white/10"
+        }`}
+      >
+        Rooms
+      </button>
+      <button
+        onClick={() => setTab("users")}
+        className={`flex-1 rounded-xl px-3 py-2 text-sm border transition ${
+          tab === "users"
+            ? `border-white/20 ${BTN_GRAD}`
+            : "border-white/10 bg-white/5 text-white hover:bg-white/10"
+        }`}
+      >
+        Users
+      </button>
+    </div>
+  );
+}
+
+function RoomsTab({ rooms, onPickRoom }) {
+  return (
+    <div className={CARD}>
+      <div className="px-4 py-3 border-b border-white/10">
+        <div className="text-white font-semibold">Rooms</div>
+        <div className="text-xs text-white/60">Pick a room</div>
+      </div>
+
+      <div className="max-h-[70vh] overflow-auto">
+        {rooms.map((r) => (
+          <button
+            key={r.id}
+            onClick={() => onPickRoom(r.id)}
+            className="w-full text-left px-4 py-3 hover:bg-white/5 hover:ring-1 hover:ring-pink-400/20 transition flex items-center gap-3 border-b border-white/5"
+          >
+            <div className={`text-white font-medium`}>
+              {r.icon ? `${r.icon} ` : ""}{r.name}
+            </div>
+
+            {r.pinned && (
+              <span className="ml-auto text-xs text-white/60">Pinned</span>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function UsersTab({ users, loading, onOpenProfile, onQuickDm }) {
+  return (
+    <div className={CARD}>
+      <div className="px-4 py-3 border-b border-white/10">
+        <div className="text-white font-semibold">Users</div>
+        <div className="text-xs text-white/60">Tap for profile</div>
+      </div>
+
+      <div className="max-h-[70vh] overflow-auto">
+        {loading ? (
+          <div className="p-4 text-white/70">Loading users...</div>
+        ) : (
+          users.map((u) => {
+            const name = safeName(u);
+            const avatar = u.profilePic || "/avatar.png";
+            return (
+              <div
+                key={u._id}
+                className="px-4 py-3 border-b border-white/5 flex items-center gap-3"
+              >
+                <button
+                  onClick={() => onOpenProfile(u._id)}
+                  className="flex items-center gap-3 min-w-0 flex-1 text-left hover:opacity-95"
+                >
+                  <Avatar src={avatar} alt={name} size={40} />
+                  <div className="min-w-0">
+                    <div className="text-white font-medium truncate">{name}</div>
+                    <div className="text-xs text-white/50 truncate">
+                      {u.isProfileComplete ? "Profile complete" : "New user"}
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => onQuickDm(u._id)}
+                  className={`rounded-xl px-3 py-2 text-xs ${BTN_GRAD}`}
+                >
+                  Chat
+                </button>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+function CenterHeader({ title, rightBadge }) {
+  return (
+    <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between gap-3">
+      <div className="text-lg font-semibold text-white truncate">{title}</div>
+      {rightBadge ? (
+        <div className={`text-xs ${CHIP_GRAD}`}>{rightBadge}</div>
+      ) : null}
+    </div>
+  );
+}
+
+
+
+function SimpleChatCenter({ headerTitle, headerBadge }) {
+
+  return (
+    <div className={CARD}>
+      <CenterHeader title={headerTitle} rightBadge={headerBadge} />
+
+      <div className="p-5 space-y-3 max-h-[62vh] overflow-auto" dir="rtl">
+        <div className="flex justify-start">
+          <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-white/10 border border-white/10 px-4 py-3 text-white">
+            היי 🙂
+            <div className="mt-1 text-[11px] text-white/50">12:03</div>
+          </div>
+        </div>
+
+        <div className="flex justify-end">
+          <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-gradient-to-r from-sky-400/90 to-pink-400/90 text-slate-900 px-4 py-3 font-medium">
+            מה קורה?
+            <div className="mt-1 text-[11px] text-slate-900/70">12:04</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-4 border-t border-white/10">
+        <div className="flex gap-2">
+          <input
+            className="flex-1 rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-sky-400/60 focus:border-sky-400/40"
+            placeholder="הקלד הודעה..."
+            dir="rtl"
+          />
+          <button className={`rounded-xl px-5 py-3 ${BTN_GRAD}`}>שלח</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+function ProfileModal({ open, onClose, user, onAddFriend, onStartDm, isFriend }) {
   if (!open) return null;
 
-  const name = user?.nickname || user?.name || "User";
+  const name = safeName(user);
   const avatar = user?.profilePic || "/avatar.png";
 
   return (
@@ -124,11 +263,9 @@ function ProfileModal({ open, onClose, user, onAddFriend, onChat, isFriend }) {
 
       <div className="relative w-full max-w-md rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-xl p-6 shadow-2xl">
         <div className="flex items-center gap-3">
-          <div className="h-14 w-14 rounded-full overflow-hidden border border-white/15 bg-white/5">
-            <img src={avatar} alt={name} className="h-full w-full object-cover" />
-          </div>
-          <div>
-            <div className="text-white text-lg font-semibold">{name}</div>
+          <Avatar src={avatar} alt={name} size={56} />
+          <div className="min-w-0">
+            <div className="text-white text-lg font-semibold truncate">{name}</div>
             <div className="text-xs text-white/60">
               {user?.isProfileComplete ? "Profile complete" : "Profile not complete"}
             </div>
@@ -148,8 +285,7 @@ function ProfileModal({ open, onClose, user, onAddFriend, onChat, isFriend }) {
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="mt-6 flex justify-between gap-2">
+        <div className="mt-6 flex gap-2">
           <button
             onClick={() => onAddFriend(user)}
             disabled={isFriend}
@@ -159,8 +295,8 @@ function ProfileModal({ open, onClose, user, onAddFriend, onChat, isFriend }) {
           </button>
 
           <button
-            onClick={() => onChat(user)}
-            className="flex-1 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-4 py-2 text-sm font-semibold transition"
+            onClick={() => onStartDm(user?._id)}
+            className={`flex-1 rounded-xl px-4 py-2 text-sm ${BTN_GRAD}`}
           >
             Chat
           </button>
@@ -179,17 +315,25 @@ function ProfileModal({ open, onClose, user, onAddFriend, onChat, isFriend }) {
   );
 }
 
+
 export default function HomePage() {
-  const navigate = useNavigate(); // ✅ עכשיו משתמשים בו
+ 
   const { logout } = useAuthStore();
 
+ 
+  const [tab, setTab] = useState("rooms"); 
+  const [center, setCenter] = useState({ type: "room", id: "general" });
+
+
+  
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
 
-  const [open, setOpen] = useState(false);
+  
+  const [openProfile, setOpenProfile] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Friends (demo) saved in localStorage
+ 
   const [friends, setFriends] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("friends") || "[]");
@@ -197,6 +341,15 @@ export default function HomePage() {
       return [];
     }
   });
+
+  
+  const rooms = [
+    { id: "general", name: "General", pinned: true },
+    { id: "anime", name: "Anime" },
+    { id: "gaming", name: "Gaming" },
+    { id: "study", name: "Study" },
+    { id: "support", name: "Support"},
+  ];
 
   useEffect(() => {
     (async () => {
@@ -210,54 +363,34 @@ export default function HomePage() {
     })();
   }, []);
 
-  // Demo users (always show at least 10)
-  const demoUsers = useMemo(
-    () =>
-      Array.from({ length: 10 }).map((_, i) => ({
-        _id: `demo-${i}`,
-        name: `Demo User ${i + 1}`,
-        nickname: `demo${i + 1}`,
-        profilePic: "/avatar.png",
-        isProfileComplete: true,
-        age: 20,
-        gender: "other",
-        createdAt: new Date().toISOString(),
-      })),
-    []
-  );
-
-  const usersToShow =
-    users.length >= 10 ? users : [...users, ...demoUsers].slice(0, 10);
-
-  async function handleSelectUser(userId) {
-    // demo user
-    if (String(userId).startsWith("demo-")) {
-      const u = usersToShow.find((x) => x._id === userId);
-      setSelectedUser(u);
-      setOpen(true);
-      return;
-    }
-
+  async function openUserProfile(userId) {
     try {
       const res = await fetchUserById(userId);
       setSelectedUser(res.user);
-      setOpen(true);
+      setOpenProfile(true);
     } catch {
-      // ignore
+      // fallback
+      const fallback = users.find((u) => String(u._id) === String(userId));
+      if (fallback) {
+        setSelectedUser(fallback);
+        setOpenProfile(true);
+      }
     }
   }
 
   function addFriend(user) {
     if (!user?._id) return;
-
-    const exists = friends.some((f) => f._id === user._id);
-    if (exists) return;
+    if (friends.some((f) => String(f._id) === String(user._id))) return;
 
     const minimal = {
       _id: user._id,
       name: user.name || "",
       nickname: user.nickname || "",
       profilePic: user.profilePic || "/avatar.png",
+      age: user.age,
+      gender: user.gender,
+      createdAt: user.createdAt,
+      isProfileComplete: user.isProfileComplete,
     };
 
     const next = [minimal, ...friends];
@@ -266,59 +399,95 @@ export default function HomePage() {
   }
 
   const isFriend = selectedUser
-    ? friends.some((f) => f._id === selectedUser._id)
+    ? friends.some((f) => String(f._id) === String(selectedUser._id))
     : false;
 
-  function goChat(user) {
-    if (!user?._id) return;
-    setOpen(false);
-    navigate(`/chat/${user._id}`); // ✅ כאן משתמשים ב-navigate
+  function pickRoom(roomId) {
+    setCenter({ type: "room", id: roomId });
   }
 
-  return (
-   <div className="w-full min-h-screen">
-    <div className="w-full max-w-7xl mx-auto px-6 pt-6">
-      <div className="flex items-start justify-between gap-8">
-          {/* LEFT */}
-           <div className="w-[280px] space-y-3">
-            <MeCard />
-              {/* ✅ כאן באמצע */}
-  <MyFriendsList
-    friends={friends}
-    onSelect={(f) => {
-      setSelectedUser(f);
-      setOpen(true);
-    }}
-  />
-          <button
-            onClick={logout}
-            className="w-full rounded-2xl bg-rose-400 hover:bg-rose-300 text-slate-900 font-semibold py-3 transition shadow-xl"
-          >
-            Logout
-          </button>
-        </div>
-        
+  function pickDm(userId) {
+    if (!userId) return;
+    setCenter({ type: "dm", id: userId });
+  }
 
-          {/* RIGHT */}
-          <div className="md:justify-self-end w-full md:w-[360px]">
-            {loadingUsers ? (
-              <div className="rounded-2xl bg-slate-900/60 border border-white/10 p-6 text-white/70">
-                Loading users...
+  function startDmFromModal(userId) {
+    setOpenProfile(false);
+    pickDm(userId);
+    
+  }
+
+
+  let centerNode = null;
+
+if (center.type === "room") {
+  const r = rooms.find((x) => x.id === center.id);
+  centerNode = (
+    <SimpleChatCenter
+      headerTitle={r ? `${r.icon ? r.icon + " " : ""}${r.name}` : "Room"}
+      headerBadge={center.id === "general" ? "Public" : "Room"}
+    />
+  );
+} else if (center.type === "dm") {
+  const u =
+    users.find((x) => String(x._id) === String(center.id)) ||
+    friends.find((x) => String(x._id) === String(center.id));
+
+  centerNode = (
+    <SimpleChatCenter
+      headerTitle={u ? safeName(u) : "Chat"}
+      headerBadge="DM"
+    />
+  );
+} else {
+ 
+  centerNode = (
+    <SimpleChatCenter headerTitle="⭐ General" headerBadge="Public" />
+  );
+}
+
+
+  return (
+    <div className="w-full min-h-screen">
+      <div className="w-full max-w-7xl mx-auto px-6 pt-6">
+        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr_360px] gap-6 items-start">
+          {/* LEFT: Friends */}
+          <div className="space-y-3">
+            <MeCard onLogout={logout} />
+            <FriendsList friends={friends} onPickDm={pickDm} />
+          </div>
+
+         
+          <div>{centerNode}</div>
+
+          
+          <div className="space-y-3">
+            <div className={CARD}>
+              <Tabs tab={tab} setTab={setTab} />
+              <div className="p-3 pt-0">
+                {tab === "rooms" ? (
+                  <RoomsTab rooms={rooms} onPickRoom={pickRoom} />
+                ) : (
+                  <UsersTab
+                    users={users}
+                    loading={loadingUsers}
+                    onOpenProfile={openUserProfile}
+                    onQuickDm={pickDm}
+                  />
+                )}
               </div>
-            ) : (
-              <UsersList users={usersToShow} onSelect={handleSelectUser} />
-            )}
+            </div>
           </div>
         </div>
       </div>
 
       <ProfileModal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={openProfile}
+        onClose={() => setOpenProfile(false)}
         user={selectedUser}
-        isFriend={isFriend}
         onAddFriend={addFriend}
-        onChat={goChat}
+        onStartDm={startDmFromModal}
+        isFriend={isFriend}
       />
     </div>
   );

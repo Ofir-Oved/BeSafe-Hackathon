@@ -8,7 +8,7 @@ require("dotenv").config();
 const authRoutes = require("./src/routes/route");
 const usersRoutes = require("./src/routes/users");
 const app = express();
-
+app.use("/public", express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
 

@@ -1,9 +1,9 @@
-// src/scripts/seedUsers.js
+
 require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const User = require("../models/UserModel"); // תוודאי שהנתיב נכון אצלך
+const User = require("../models/UserModel"); // 
 
 async function seedUsers() {
   if (!process.env.MONGO_URI) {
@@ -33,18 +33,24 @@ async function seedUsers() {
   await User.deleteMany({ email: { $in: emails } });
 
   await User.insertMany(
-    users.map((u) => ({
-      name: u.nickname, 
-      email: u.email,
-      password: passwordHash,
-      isEmailVerified: true, 
-      nickname: u.nickname,
-      age: u.age,
-      gender: u.gender,
-      profilePic: "", 
-      isProfileComplete: true, 
-    }))
-  );
+  users.map((u) => ({
+    name: u.nickname,
+    email: u.email,
+    password: passwordHash,
+    isEmailVerified: true,
+    nickname: u.nickname,
+    age: u.age,
+    gender: u.gender,
+
+    // ✅ רק זה השתנה: במקום ריק – DiceBear
+    profilePic: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(
+      u.nickname || u.email
+    )}`,
+
+    isProfileComplete: true,
+  }))
+);
+
 
   console.log("✅ Seeded 7 users (password: 123456)");
   await mongoose.disconnect();
