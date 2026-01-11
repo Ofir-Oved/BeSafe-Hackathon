@@ -87,7 +87,7 @@ function FriendsList({ friends, onPickDm }) {
 
         {friends.length === 0 && (
           <div className="p-4 text-white/70">
-            No friends yet. Add someone 🙂
+            No friends yet. Add someone 
           </div>
         )}
       </div>
