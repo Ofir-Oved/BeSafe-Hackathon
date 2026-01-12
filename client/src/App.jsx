@@ -12,6 +12,7 @@ import ChatPage from './pages/ChatPage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
+import MessageAdmin from "./pages/MessageAdmin";
 
 function App() {
   const [loading, setLoading] = useState(() => !!getToken());
@@ -39,6 +40,7 @@ function App() {
             <Link to="/" className={styles.appLink}>Home</Link>
             <Link to="/chat" className={styles.appLink}>Chat</Link>
             <Link to="/admin" className={styles.appLink}>Admin</Link>
+            <Link to="/help" className={styles.appLink}>Help</Link>
           </nav>
         </header>
         <main className={styles.main}>
@@ -48,6 +50,7 @@ function App() {
             <Route path="/" element={<RequireAuth><WelcomePage /></RequireAuth>}/>
             <Route path="/chat" element={<RequireAuth><ChatPage /></RequireAuth>}/>
             <Route path="/admin" element={<RequireAuth><AdminPage /></RequireAuth>}/>
+            <Route path="/help" element={<RequireAuth><MessageAdmin /></RequireAuth>}/>
           </Routes>
         </main>
         <ToastContainer position="top-center" />
