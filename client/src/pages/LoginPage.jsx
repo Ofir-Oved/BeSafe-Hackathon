@@ -35,7 +35,7 @@ export default function LoginPage() {
 
       saveToken(res.token);
 
-      navigate("/welcome");
+      navigate("/");
 
     } catch (err) {
       setStatus({
