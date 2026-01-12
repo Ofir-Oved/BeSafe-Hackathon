@@ -13,7 +13,6 @@ import ChatPage from './pages/ChatPage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-import ProfileSetupPage from "./pages/ProfileSetupPage";
 
 function App() {
   const [loading, setLoading] = useState(() => !!getToken());
@@ -47,7 +46,6 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/profile-setup" element={<ProfileSetupPage />} />
             <Route path="/welcome" element={<RequireAuth><WelcomePage /></RequireAuth>} />
             <Route path="/" element={<RequireAuth><HomePage /></RequireAuth>}/>
             <Route path="/chat" element={<RequireAuth><ChatPage /></RequireAuth>}/>

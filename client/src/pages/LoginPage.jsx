@@ -35,11 +35,8 @@ export default function LoginPage() {
 
       saveToken(res.token);
 
-      if (res.user?.profileCompleted) {
-        navigate("/welcome");
-      } else {
-        navigate("/profile-setup");
-      }
+      navigate("/welcome");
+
     } catch (err) {
       setStatus({
         type: "error",

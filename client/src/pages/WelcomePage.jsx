@@ -6,7 +6,7 @@ export default function Welcome() {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate("/profile-setup");
+        navigate("/chat");
     }
 
   return (
