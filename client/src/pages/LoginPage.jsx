@@ -36,7 +36,7 @@ export default function LoginPage() {
       saveToken(res.token);
 
       if (res.user?.profileCompleted) {
-        navigate("/");
+        navigate("/welcome");
       } else {
         navigate("/profile-setup");
       }
