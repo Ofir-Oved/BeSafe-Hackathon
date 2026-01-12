@@ -23,7 +23,7 @@ export default function Welcome() {
         ומשתמשים שיפרו את הכללים ייחסמו מהמערכת.
         </p>
       <button onClick={handleClick}>
-        לכניסה לצ'אט <span className="arrow">←</span>
+        לכניסה לצ&#39;אט <span className="arrow">←</span>
       </button>
     </div>
   );
