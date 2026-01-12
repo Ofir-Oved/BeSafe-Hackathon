@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchUsers, toggleBlockUser, updateStrikes } from "../services/api";
-//import styles from "../styles/AdminPage.module.css"; 
+import "../styles/AdminPage.css";
 
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
@@ -57,22 +57,22 @@ export default function AdminPage() {
   if (loading) return <div>Loading users...</div>;
 
   return (
-    <div className="admin-container" style={{ padding: "20px" }}>
+    <div className="admin-container">
       <h1>Admin Dashboard</h1>
 
-      <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
-        <button onClick={() => setFilter("all")} disabled={filter === "all"}>
+      <div className="filter-bar">
+        <button className="filter-btn" onClick={() => setFilter("all")} disabled={filter === "all"}>
           All Users
         </button>
-        <button onClick={() => setFilter("blocked")} disabled={filter === "blocked"}>
+        <button className="filter-btn" onClick={() => setFilter("blocked")} disabled={filter === "blocked"}>
           Blocked Users
         </button>
-        <button onClick={() => setFilter("strikes")} disabled={filter === "strikes"}>
+        <button className="filter-btn" onClick={() => setFilter("strikes")} disabled={filter === "strikes"}>
           Users with Strikes
         </button>
       </div>
 
-      <table border="1" cellPadding="10" style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table className="users-table">
         <thead>
           <tr>
             <th>Email</th>
@@ -84,28 +84,26 @@ export default function AdminPage() {
         </thead>
         <tbody>
           {filteredUsers.length === 0 ? (
-            <tr><td colSpan="5">No users found in this category.</td></tr>
+            <tr><td colSpan="5" style={{textAlign: 'center'}}>No users found.</td></tr>
           ) : (
             filteredUsers.map((user) => (
-              <tr key={user._id} style={{ backgroundColor: user.isBlocked ? "#ffebee" : "white" }}>
+              <tr key={user._id} className={`user-row ${user.isBlocked ? "blocked" : ""}`}>
                 <td>{user.email}</td>
                 <td>{user.nickname || "-"}</td>
                 <td>
-                  <button onClick={() => handleStrikeChange(user, -1)}>-</button>
-                  <span style={{ margin: "0 10px", fontWeight: "bold" }}>{user.strikes}</span>
-                  <button onClick={() => handleStrikeChange(user, 1)}>+</button>
+                  <button className="strike-btn" onClick={() => handleStrikeChange(user, -1)}>-</button>
+                  <span className="strike-count">{user.strikes}</span>
+                  <button className="strike-btn" onClick={() => handleStrikeChange(user, 1)}>+</button>
                 </td>
                 <td>
-                  {user.isBlocked ? (
-                    <span style={{ color: "red", fontWeight: "bold" }}>BLOCKED</span>
-                  ) : (
-                    <span style={{ color: "green" }}>Active</span>
-                  )}
+                  <span className={`status-tag ${user.isBlocked ? "status-blocked" : "status-active"}`}>
+                    {user.isBlocked ? "BLOCKED" : "Active"}
+                  </span>
                 </td>
                 <td>
                   <button 
                     onClick={() => handleBlockToggle(user)}
-                    style={{ backgroundColor: user.isBlocked ? "green" : "red", color: "white" }}
+                    className={`action-btn ${user.isBlocked ? "btn-unblock" : "btn-block"}`}
                   >
                     {user.isBlocked ? "Unblock" : "Block"}
                   </button>

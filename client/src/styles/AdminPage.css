@@ -1,0 +1,132 @@
+.admin-container {
+    padding: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fffafb; 
+}
+
+.admin-container h1 {
+    color: #ff1493; 
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #ffe4e1;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.filter-bar {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid #ff69b4;
+    background-color: white;
+    color: #ff69b4;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: #fff0f5;
+}
+
+.filter-btn:disabled {
+    background-color: #ff69b4;
+    color: white;
+    cursor: default;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; 
+}
+
+.users-table th {
+    background-color: #ff85a2;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.users-table th:first-child { border-radius: 12px 0 0 12px; }
+.users-table th:last-child { border-radius: 0 12px 12px 0; }
+
+.user-row {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(255, 182, 193, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.user-row:hover {
+    transform: scale(1.01);
+}
+
+.user-row td {
+    padding: 15px;
+    color: #444;
+    border-top: 1px solid #ffe4e1;
+    border-bottom: 1px solid #ffe4e1;
+}
+
+.user-row td:first-child { border-left: 1px solid #ffe4e1; border-radius: 12px 0 0 12px; }
+.user-row td:last-child { border-right: 1px solid #ffe4e1; border-radius: 0 12px 12px 0; }
+
+.user-row.blocked {
+    background-color: #fff0f5;
+}
+
+.strike-btn {
+    background-color: #ffe4e1;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: #ff1493;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.strike-count {
+    margin: 0 12px;
+    font-weight: 700;
+    color: #333;
+}
+
+.status-tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-active { color: #2ecc71; background: #e8f8f0; }
+.status-blocked { color: #e74c3c; background: #fdeaea; }
+
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-block { background-color: #ff4757; }
+.btn-unblock { background-color: #2ecc71; }
+
+.action-btn:hover {
+    opacity: 0.8;
+}
