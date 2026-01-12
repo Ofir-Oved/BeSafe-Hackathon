@@ -73,7 +73,7 @@ export default function ChatPage() {
           id: u._id,
           name: u.nickname || u.email || "Me",
         });
-      } catch (e) {
+      } catch {
         if (cancelled) return;
         setMe(null);
       } finally {
