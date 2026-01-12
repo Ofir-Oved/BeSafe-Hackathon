@@ -31,7 +31,7 @@ export default function Overlay() {
         case 3:
           addMessage("bot", "מעבירה אותך לרשת החברתית המוגנת שלנו... 🌐");
           setTimeout(() => {
-            window.open("http://localhost:3000", "_blank");
+            window.open("http://localhost:3000/welcome", "_blank");
           }, 2000);
           break;
         case 4:

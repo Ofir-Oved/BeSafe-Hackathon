@@ -7,12 +7,11 @@ import RequireAuth from "./components/RequireAuth";
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './styles/App.module.css';
 
-import HomePage from './pages/HomePage'
+import WelcomePage from './pages/WelcomePage'
 import ChatPage from './pages/ChatPage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-import ProfileSetupPage from "./pages/ProfileSetupPage";
 
 function App() {
   const [loading, setLoading] = useState(() => !!getToken());
@@ -46,8 +45,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/profile-setup" element={<ProfileSetupPage />} />
-            <Route path="/" element={<RequireAuth><HomePage /></RequireAuth>}/>
+            <Route path="/" element={<RequireAuth><WelcomePage /></RequireAuth>}/>
             <Route path="/chat" element={<RequireAuth><ChatPage /></RequireAuth>}/>
             <Route path="/admin" element={<RequireAuth><AdminPage /></RequireAuth>}/>
           </Routes>
