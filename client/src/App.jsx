@@ -28,7 +28,7 @@ function App() {
     (async () => {
       try {
         await apiGet("/auth/me");
-      } catch (e) {
+      } catch {
         clearToken();
         if (!cancelled) navigate("/login");
       } finally {
