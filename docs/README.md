@@ -1,25 +1,76 @@
-### Prerequisites
-* Node.js installed
-* OpenAI API Key
+# SafePlace – AI-Powered Online Safety Tool
 
-### Backend Setup
-1. `cd server`
-2. `npm install`
-3. Add `.env` file and add `OPENAI_API_KEY=your_openai_api_key_here`
-4. `node server.js`
+SafePlace is a full-stack application designed to improve online safety for children and teenagers by detecting harmful content in real time and providing immediate support options.
 
-### Chrome Extension Installation
-1. Open Google Chrome and navigate to `chrome://extensions`
-2. Enable **Developer mode** (toggle in the top right corner)
-3. Click **Load unpacked** and select the `extension` folder from this project
+The project was developed during the **BeSafe Hackathon (QueenB × AppsFlyer)**, where the team won **3rd place**.
 
-### How To Test
-1. Open any website (If the site was already open, refresh the page to inject the scanner)
-2. To simulate a harmful message:
-   * Right-click any text on the page and select **Inspect**
-   * Change the text to something harmful
-   * Press **Enter**
-3. Wait 3 seconds
-4. A red notification alert should appear in the bottom-right corner of your screen
 
-![Alert Example](assets/alert.png)
+## 🚀 Demo
+
+A video demo is available in the `/demo-video` folder in this repository.
+
+The demo shows:
+
+- Real-time harmful content detection  
+- Chrome extension overlay behavior  
+- Messaging system between users
+  
+
+## ✨ Features
+
+- Real-time harmful content detection using AI  
+- Chrome Extension that injects a React overlay into web pages  
+- Responsive UI built with React, JavaScript, and CSS  
+- Backend integration using Node.js (Express) REST APIs  
+- Admin dashboard for monitoring and managing user requests  
+- Messaging system between users and admins  
+- MongoDB database for persistence  
+- Component-based architecture with reusable UI components
+  
+
+## 🧱 Architecture Overview
+
+### Frontend
+- React + JavaScript + CSS  
+- Chrome Extension (Manifest V3)
+
+### Backend
+- Node.js (Express) REST API  
+- MongoDB database
+  
+
+### AI Integration
+- OpenAI API for harmful content detection  
+
+The system connects a browser extension UI with backend services through REST APIs to enable real-time detection and response workflows.
+
+
+## 🛠️ Technologies Used
+
+### Frontend
+- React  
+- JavaScript  
+- CSS  
+
+### Backend
+- Node.js  
+- Express  
+
+### Database
+- MongoDB  
+
+### Other Tools
+- Git & GitHub  
+- Chrome Extension Manifest V3  
+- OpenAI API
+  
+
+## ▶️ How to Run the Project
+
+1. Clone the repository  
+2. Install dependencies for frontend and backend  
+3. Add environment variables (`.env`)  
+4. Run backend  
+5. Load the Chrome extension in Developer Mode  
+
+*(Exact setup may vary depending on environment.)*
