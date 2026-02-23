@@ -132,6 +132,6 @@ observer.observe(document.body, {
 //first scan of existing content, waits 2 seconds for page to load
 setTimeout(() => {
     console.log("Initial delayed scan");
-    handleNewText(document.body.innerText);
+    handleNewText(document.body.innerText.slice(0,2000));
 }, 2000);
 
